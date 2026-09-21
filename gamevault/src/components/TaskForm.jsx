@@ -25,11 +25,15 @@ function TaskForm({ onAdicionar }) {
       className="bg-white rounded-xl shadow-md p-5 mb-8 flex flex-wrap gap-3 items-end"
     >
       <div className="flex-1 min-w-[200px]">
-        <label className="block text-sm font-semibold text-slate-600 mb-1">
+        <label
+          htmlFor="campo-titulo"
+          className="block text-sm font-semibold text-slate-600 mb-1"
+        >
           Novo jogo
         </label>
 
         <input
+          id="campo-titulo"
           type="text"
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
@@ -39,11 +43,15 @@ function TaskForm({ onAdicionar }) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-slate-600 mb-1">
+        <label
+          htmlFor="campo-categoria"
+          className="block text-sm font-semibold text-slate-600 mb-1"
+        >
           Categoria
         </label>
 
         <select
+          id="campo-categoria"
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
           className="border border-slate-300 rounded-lg px-3 py-2 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600"
@@ -57,11 +65,15 @@ function TaskForm({ onAdicionar }) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-slate-600 mb-1">
+        <label
+          htmlFor="campo-prioridade"
+          className="block text-sm font-semibold text-slate-600 mb-1"
+        >
           Prioridade
         </label>
 
         <select
+          id="campo-prioridade"
           value={prioridade}
           onChange={(e) => setPrioridade(e.target.value)}
           className="border border-slate-300 rounded-lg px-3 py-2 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600"
@@ -74,7 +86,7 @@ function TaskForm({ onAdicionar }) {
 
       <button
         type="submit"
-        className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2 rounded-lg transition-colors"
+        className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-700"
       >
         + Adicionar
       </button>

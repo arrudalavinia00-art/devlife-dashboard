@@ -18,14 +18,14 @@ function GameCard({
 
   const coresPrioridade = {
     alta: "bg-red-100 text-red-700",
-    media: "bg-yellow-100 text-yellow-700",
+    media: "bg-yellow-100 text-yellow-800",
     baixa: "bg-emerald-100 text-emerald-700",
   };
 
   return (
     <article
-      className={`rounded-xl border border-slate-700 bg-slate-800 p-6 shadow-lg transition ${
-        concluido ? "opacity-60" : ""
+      className={`rounded-xl border border-slate-700 p-6 shadow-lg transition ${
+        concluido ? "bg-slate-900" : "bg-slate-800"
       }`}
     >
       <div className="mb-5 flex items-center justify-between gap-2">
@@ -46,7 +46,11 @@ function GameCard({
         </span>
       </div>
 
-      <h2 className="mb-3 text-xl font-bold text-white">
+      <h2
+        className={`mb-3 text-xl font-bold ${
+          concluido ? "text-slate-400 line-through" : "text-white"
+        }`}
+      >
         {titulo}
       </h2>
 
@@ -55,7 +59,7 @@ function GameCard({
       </p>
 
       <div className="border-t border-slate-700 pt-4">
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-300">
           Plataforma
         </p>
 
@@ -70,7 +74,7 @@ function GameCard({
             type="checkbox"
             checked={concluido}
             onChange={onToggle}
-            className="h-4 w-4 accent-emerald-600"
+            className="h-4 w-4 accent-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1"
           />
 
           Jogado
@@ -78,7 +82,8 @@ function GameCard({
 
         <button
           onClick={onRemover}
-          className="text-sm font-semibold text-red-400 transition hover:text-red-300"
+          aria-label={`Remover jogo: ${titulo}`}
+          className="rounded px-1 text-sm font-semibold text-red-600 transition hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-slate-800"
         >
           Remover
         </button>
