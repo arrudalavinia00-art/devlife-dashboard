@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import GameCard from "./components/GameCard";
 import TaskForm from "./components/TaskForm";
+import StatusRede from "./components/StatusRede";
+import InstallPrompt from "./components/InstallPrompt";
 
 const JOGOS_INICIAIS = [
   {
@@ -84,7 +86,9 @@ function App() {
     if (!jogo) return;
 
     const vaiConcluir = !jogo.concluido;
-    const status = vaiConcluir ? "marcado como jogado" : "marcado como não jogado";
+    const status = vaiConcluir
+      ? "marcado como jogado"
+      : "marcado como não jogado";
 
     setJogos((atual) =>
       atual.map((item) =>
@@ -121,7 +125,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-950">
-      {/* Skip link: aparece quando recebe foco pelo teclado */}
       <a
         href="#conteudo"
         className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-slate-900 focus:shadow-lg"
@@ -131,7 +134,9 @@ function App() {
 
       <Header />
 
-      {/* Região para anúncios importantes ao leitor de tela */}
+      <StatusRede />
+      <InstallPrompt />
+
       <div
         aria-live="polite"
         role="status"
