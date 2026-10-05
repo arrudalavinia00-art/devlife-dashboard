@@ -5,6 +5,9 @@ import GameCard from "./components/GameCard";
 import TaskForm from "./components/TaskForm";
 import StatusRede from "./components/StatusRede";
 import InstallPrompt from "./components/InstallPrompt";
+import NotificationPrompt from "./components/NotificationPrompt";
+import { notificarLocal } from "./notifications";
+import { agendarSincronizacao } from "./backgroundSync";
 
 const JOGOS_INICIAIS = [
   {
@@ -65,6 +68,39 @@ function App() {
     localStorage.setItem("gamevault-jogos", JSON.stringify(jogos));
   }, [jogos]);
 
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+
+    function aoReceberMensagem(evento) {
+      if (evento.data?.tipo === "SINCRONIZADO") {
+        setAnuncio("Sincronização em segundo plano concluída.");
+      }
+    }
+
+    navigator.serviceWorker.addEventListener(
+      "message",
+      aoReceberMensagem
+    );
+
+    return () => {
+      navigator.serviceWorker.removeEventListener(
+        "message",
+        aoReceberMensagem
+      );
+    };
+  }, []);
+
+  function avisarMudancaOffline() {
+    if (!navigator.onLine) {
+      agendarSincronizacao("sincronizar-jogos");
+
+      setAnuncio(
+        (atual) =>
+          `${atual} A sincronização ocorrerá quando a conexão voltar.`
+      );
+    }
+  }
+
   function adicionarJogo(novoJogo) {
     setJogos((atual) => [
       ...atual,
@@ -72,12 +108,13 @@ function App() {
         ...novoJogo,
         id: Date.now(),
         descricao: "Novo jogo adicionado ao GameVault.",
-        plataforma: "A definir",
         concluido: false,
       },
     ]);
 
     setAnuncio(`Jogo "${novoJogo.titulo}" adicionado.`);
+
+    avisarMudancaOffline();
   }
 
   function alternarConcluido(id) {
@@ -86,6 +123,7 @@ function App() {
     if (!jogo) return;
 
     const vaiConcluir = !jogo.concluido;
+
     const status = vaiConcluir
       ? "marcado como jogado"
       : "marcado como não jogado";
@@ -99,6 +137,12 @@ function App() {
     );
 
     setAnuncio(`Jogo "${jogo.titulo}" ${status}.`);
+
+    if (vaiConcluir && jogo.prioridade === "alta") {
+      notificarLocal("Jogo de alta prioridade concluído ", {
+        body: jogo.titulo,
+      });
+    }
   }
 
   function removerJogo(id) {
@@ -106,9 +150,13 @@ function App() {
 
     if (!jogo) return;
 
-    setJogos((atual) => atual.filter((item) => item.id !== id));
+    setJogos((atual) =>
+      atual.filter((item) => item.id !== id)
+    );
 
     setAnuncio(`Jogo "${jogo.titulo}" removido.`);
+
+    avisarMudancaOffline();
   }
 
   const jogosFiltrados = jogos.filter((jogo) => {
@@ -135,7 +183,10 @@ function App() {
       <Header />
 
       <StatusRede />
+
       <InstallPrompt />
+
+      <NotificationPrompt />
 
       <div
         aria-live="polite"

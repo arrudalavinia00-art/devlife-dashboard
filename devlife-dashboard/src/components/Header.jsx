@@ -5,12 +5,10 @@ function Header() {
   const [mostrarRelogio, setMostrarRelogio] = useState(true);
 
   return (
-    <header className="bg-slate-900 text-white px-8 py-4 flex items-center justify-between">
-      <h1 className="text-2xl font-bold">
+    <header className="flex items-center justify-between bg-slate-900 px-8 py-4 text-white">
+      <h1 className="font-display text-2xl font-bold">
         GameVault{" "}
-        <span className="text-emerald-400" aria-hidden="true">
-          
-        </span>
+        <span className="text-emerald-400" aria-hidden="true"></span>
       </h1>
 
       <div className="flex items-center gap-3">
